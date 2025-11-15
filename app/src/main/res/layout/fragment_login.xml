@@ -112,7 +112,7 @@
         android:id="@+id/btnGoRegister"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Create account"
+        android:text="Sign Up"
         android:textAllCaps="false"
         android:textColor="#222222"
         android:backgroundTint="@android:color/transparent"

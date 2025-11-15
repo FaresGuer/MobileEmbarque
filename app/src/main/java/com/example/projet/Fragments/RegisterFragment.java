@@ -122,28 +122,46 @@ public class RegisterFragment extends Fragment {
         String dob = etDob.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
 
-        // 1. Empty check
-        if (username.isEmpty() || email.isEmpty() || phone.isEmpty()
-                || dob.isEmpty() || password.isEmpty()) {
-            Toast.makeText(requireContext(), "Fill all required fields", Toast.LENGTH_SHORT).show();
+
+        if (username.isEmpty()) {
+            etUsername.setError("Username is required");
             return;
         }
-
+        if(email.isEmpty())
+        {
+            etEmail.setError("Email is required");
+            return;
+        }
+        if(phone.isEmpty())
+        {
+            etPhone.setError("Phone is required");
+            return;
+        }
+        if(dob.isEmpty())
+        {
+            etDob.setError("Date of Birth is required");
+            return;
+        }
+        if(password.isEmpty())
+        {
+            etPassword.setError("Password is required");
+            return;
+        }
         // Email format
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(requireContext(), "Please enter a valid email", Toast.LENGTH_SHORT).show();
+            etEmail.setError("Please enter a valid email");
             return;
         }
 
         // Phone: exactly 8 digits
-        if (!phone.matches("\\d{8}")) {
-            Toast.makeText(requireContext(), "Phone must be exactly 8 digits", Toast.LENGTH_SHORT).show();
+        if (!phone.matches("\\d{8}")) {//
+            etPhone.setError("Phone must be exactly 8 digits");
             return;
         }
 
         // DOB: format + real date
         if (!isValidDate(dob)) {
-            Toast.makeText(requireContext(), "Date of birth must be YYYY-MM-DD and a real date", Toast.LENGTH_SHORT).show();
+            etDob.setError("Date of birth must be YYYY-MM-DD and a real date");
             return;
         }
 
