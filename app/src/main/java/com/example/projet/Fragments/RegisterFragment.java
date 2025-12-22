@@ -44,10 +44,10 @@ public class RegisterFragment extends Fragment {
     private ImageView ivAvatar;
     private AppDatabase db;
 
-    // will store the selected image Uri as string
+
     private String selectedAvatarUri;
 
-    // Activity Result launcher to pick image
+
     private final ActivityResultLauncher<Intent> imagePickerLauncher =
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
@@ -132,9 +132,17 @@ public class RegisterFragment extends Fragment {
             etEmail.setError("Email is required");
             return;
         }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            etEmail.setError("Please enter a valid email");
+            return;
+        }
         if(phone.isEmpty())
         {
             etPhone.setError("Phone is required");
+            return;
+        }
+        if (!phone.matches("\\d{8}")) {
+            etPhone.setError("Phone must be exactly 8 digits");
             return;
         }
         if(dob.isEmpty())
@@ -142,26 +150,13 @@ public class RegisterFragment extends Fragment {
             etDob.setError("Date of Birth is required");
             return;
         }
+        if (!isValidDate(dob)) {
+            etDob.setError("Date of birth must be YYYY-MM-DD and a real date");
+            return;
+        }
         if(password.isEmpty())
         {
             etPassword.setError("Password is required");
-            return;
-        }
-        // Email format
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            etEmail.setError("Please enter a valid email");
-            return;
-        }
-
-        // Phone: exactly 8 digits
-        if (!phone.matches("\\d{8}")) {//
-            etPhone.setError("Phone must be exactly 8 digits");
-            return;
-        }
-
-        // DOB: format + real date
-        if (!isValidDate(dob)) {
-            etDob.setError("Date of birth must be YYYY-MM-DD and a real date");
             return;
         }
 
@@ -183,7 +178,6 @@ public class RegisterFragment extends Fragment {
         }).start();
     }
     private boolean isValidDate(String dateStr) {
-        // Must match YYYY-MM-DD pattern
         if (!dateStr.matches("\\d{4}-\\d{2}-\\d{2}")) {
             return false;
         }

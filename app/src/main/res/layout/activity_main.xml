@@ -118,6 +118,54 @@
                     android:textSize="16sp"
                     android:layout_marginStart="12dp" />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/itemEmergencyContacts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingVertical="8dp"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/call"
+                    />
+
+                <TextView
+                    android:id="@+id/tvMenuEmergencyContacts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="EmergencyContacts"
+                    android:textSize="16sp"
+                    android:layout_marginStart="12dp" />
+            </LinearLayout>
+            <LinearLayout
+            android:id="@+id/itemFriends"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingVertical="8dp"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/friends"
+                />
+
+            <TextView
+                android:id="@+id/tvMenuFriends"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Friends"
+                android:textSize="16sp"
+                android:layout_marginStart="12dp" />
+        </LinearLayout>
 
         </LinearLayout>
 

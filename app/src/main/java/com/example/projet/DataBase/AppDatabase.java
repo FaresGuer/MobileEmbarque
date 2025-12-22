@@ -4,16 +4,24 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 
+import com.example.projet.DAO.EmergencyContactDao;
+import com.example.projet.DAO.FriendDao;
 import com.example.projet.DAO.UserDao;
+import com.example.projet.Entities.EmergencyContact;
+import com.example.projet.Entities.Friend;
 import com.example.projet.Entities.User;
 
-@Database(entities = {User.class}, version = 1)
+@Database(entities = {User.class, EmergencyContact.class, Friend.class}, version = 1)
+@TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instance;
 
     public abstract UserDao userDao();
+    public abstract EmergencyContactDao emergencyContactDao();
+    public abstract FriendDao friendDao();
 
     public static synchronized AppDatabase getInstance(Context context) {
         if (instance == null) {
