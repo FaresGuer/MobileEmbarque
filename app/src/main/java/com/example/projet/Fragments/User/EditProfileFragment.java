@@ -1,4 +1,4 @@
-package com.example.projet.Fragments;
+package com.example.projet.Fragments.User;
 
 import android.app.DatePickerDialog;
 import android.net.Uri;

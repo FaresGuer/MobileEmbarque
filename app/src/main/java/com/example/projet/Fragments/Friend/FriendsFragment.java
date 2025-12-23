@@ -1,4 +1,4 @@
-package com.example.projet.Fragments;
+package com.example.projet.Fragments.Friend;
 
 import android.content.Context;
 import android.os.Bundle;

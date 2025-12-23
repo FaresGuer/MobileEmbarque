@@ -1,4 +1,4 @@
-package com.example.projet.Fragments;
+package com.example.projet.Fragments.User;
 
 import android.content.Context;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.example.projet.Fragments;
+package com.example.projet.Fragments.EmergencyC;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -13,12 +13,16 @@ import com.example.projet.DataBase.AppDatabase;
 import com.example.projet.DataBase.PrefsHelper;
 import com.example.projet.DataBase.UserSession;
 import com.example.projet.Entities.User;
-import com.example.projet.Fragments.EditProfileFragment;
-import com.example.projet.Fragments.EmergencyContactsFragment;
-import com.example.projet.Fragments.FriendsFragment;
-import com.example.projet.Fragments.HomeFragment;
-import com.example.projet.Fragments.LoginFragment;
-import com.example.projet.Fragments.RegisterFragment;
+import com.example.projet.Fragments.Control.ControlFragment;
+import com.example.projet.Fragments.Environment.EnvironmentFragment;
+import com.example.projet.Fragments.Fall.FallFragment;
+import com.example.projet.Fragments.Health.HealthFragment;
+import com.example.projet.Fragments.User.EditProfileFragment;
+import com.example.projet.Fragments.EmergencyC.EmergencyContactsFragment;
+import com.example.projet.Fragments.Friend.FriendsFragment;
+import com.example.projet.Fragments.User.HomeFragment;
+import com.example.projet.Fragments.User.LoginFragment;
+import com.example.projet.Fragments.User.RegisterFragment;
 
 
 public class MainActivity extends AppCompatActivity
@@ -26,10 +30,14 @@ public class MainActivity extends AppCompatActivity
         LoginFragment.LoginListener,
         EmergencyContactsFragment.MenuListener,
         FriendsFragment.MenuListener,
+        ControlFragment.MenuListener,
+        EnvironmentFragment.MenuListener,
+        FallFragment.MenuListener,
+        HealthFragment.MenuListener,
         RegisterFragment.RegisterListener {
 
     private DrawerLayout drawerLayout;
-    private View itemProfile, itemHealth, itemEnvironment, itemLogout,itemEmergencyContacts,itemFriends;
+    private View itemProfile, itemHealth, itemEnvironment, itemLogout,itemEmergencyContacts,itemFriends,itemFall,itemControl;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +48,8 @@ public class MainActivity extends AppCompatActivity
         itemProfile = findViewById(R.id.itemProfile);
         itemHealth = findViewById(R.id.itemHealth);
         itemEnvironment = findViewById(R.id.itemEnvironment);
+        itemControl=findViewById(R.id.itemControl);
+        itemFall=findViewById(R.id.itemFall);
         itemEmergencyContacts = findViewById(R.id.itemEmergencyContacts);
         itemFriends = findViewById(R.id.itemFriends);
         itemLogout = findViewById(R.id.itemLogout);
@@ -62,11 +72,40 @@ public class MainActivity extends AppCompatActivity
         itemHealth.setOnClickListener(v -> {
 
             drawerLayout.closeDrawer(GravityCompat.START);
+            v.postDelayed(() -> {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new HealthFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }, 200);
         });
 
         itemEnvironment.setOnClickListener(v -> {
-
             drawerLayout.closeDrawer(GravityCompat.START);
+            v.postDelayed(() -> {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new EnvironmentFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }, 200);
+        });
+        itemFall.setOnClickListener(v -> {
+            drawerLayout.closeDrawer(GravityCompat.START);
+            v.postDelayed(() -> {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new FallFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }, 200);
+        });
+        itemControl.setOnClickListener(v -> {
+            drawerLayout.closeDrawer(GravityCompat.START);
+            v.postDelayed(() -> {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new ControlFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }, 200);
         });
         itemEmergencyContacts.setOnClickListener(v -> {
             drawerLayout.closeDrawer(GravityCompat.START);

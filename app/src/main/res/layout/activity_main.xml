@@ -118,6 +118,57 @@
                     android:textSize="16sp"
                     android:layout_marginStart="12dp" />
             </LinearLayout>
+            <!-- Fall item -->
+            <LinearLayout
+                android:id="@+id/itemFall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingVertical="8dp"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/fallingdown"
+                    />
+
+                <TextView
+                    android:id="@+id/tvMenuFall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Accident Awareness"
+                    android:textSize="16sp"
+                    android:layout_marginStart="12dp" />
+            </LinearLayout>
+            <!-- Control item -->
+            <LinearLayout
+                android:id="@+id/itemControl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingVertical="8dp"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/controlsystem"
+                    />
+
+                <TextView
+                    android:id="@+id/tvMenuControl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gesture Control"
+                    android:textSize="16sp"
+                    android:layout_marginStart="12dp" />
+            </LinearLayout>
+            <!-- Emergency item -->
             <LinearLayout
                 android:id="@+id/itemEmergencyContacts"
                 android:layout_width="match_parent"
@@ -142,6 +193,7 @@
                     android:textSize="16sp"
                     android:layout_marginStart="12dp" />
             </LinearLayout>
+            <!-- Friends item -->
             <LinearLayout
             android:id="@+id/itemFriends"
             android:layout_width="match_parent"
@@ -151,7 +203,6 @@
             android:paddingVertical="8dp"
             android:clickable="true"
             android:foreground="?attr/selectableItemBackground">
-
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
