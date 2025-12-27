@@ -12,8 +12,10 @@ import com.example.projet.DAO.UserDao;
 import com.example.projet.Entities.EmergencyContact;
 import com.example.projet.Entities.Friend;
 import com.example.projet.Entities.User;
+import com.example.projet.Entities.EnvironmentAlert;
+import com.example.projet.DAO.EnvironmentAlertDao;
 
-@Database(entities = {User.class, EmergencyContact.class, Friend.class}, version = 1)
+@Database(entities = {User.class, EmergencyContact.class, Friend.class, EnvironmentAlert.class}, version = 2)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -22,6 +24,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract EmergencyContactDao emergencyContactDao();
     public abstract FriendDao friendDao();
+    public abstract EnvironmentAlertDao environmentAlertDao();
 
     public static synchronized AppDatabase getInstance(Context context) {
         if (instance == null) {
