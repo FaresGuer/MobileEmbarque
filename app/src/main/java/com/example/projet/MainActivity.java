@@ -2,6 +2,7 @@ package com.example.projet;
 
 import android.os.Bundle;
 import android.view.View;
+import android.util.Log;
 
 
 import androidx.annotation.Nullable;
@@ -181,11 +182,13 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onOpenRightMenu() {
-        drawerLayout.openDrawer(GravityCompat.START);
+        Log.d("MainActivity", "onOpenRightMenu called");
+        if (drawerLayout != null) drawerLayout.openDrawer(GravityCompat.START);
     }
     @Override
     public void onOpenMenu() {
-        drawerLayout.openDrawer(GravityCompat.START);
+        Log.d("MainActivity", "onOpenMenu called");
+        if (drawerLayout != null) drawerLayout.openDrawer(GravityCompat.START);
     }
 
     private void doLogout() {
@@ -222,4 +225,5 @@ public class MainActivity extends AppCompatActivity
 
         getSupportFragmentManager().popBackStack();
     }
+
 }
