@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_toggle_favorite"
+        android:title="Toggle favorite" />
+    <item
+        android:id="@+id/action_toggle_emergency"
+        android:title="Toggle emergency contact" />
+    <item
+        android:id="@+id/action_delete"
+        android:title="Delete friend" />
+</menu>
