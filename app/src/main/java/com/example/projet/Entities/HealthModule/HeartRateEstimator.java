@@ -38,7 +38,7 @@ public class HeartRateEstimator {
     public synchronized Result estimate() {
         if (buf.size() < 60) return new Result(0, 0f, false);
 
-        // Build arrays
+
         int n = buf.size();
         float[] x = new float[n];
         long[] t = new long[n];
@@ -47,20 +47,17 @@ public class HeartRateEstimator {
             t[i] = buf.get(i).tMs;
         }
 
-        // Baseline removal using moving average
         float[] y = highPassByMovingAverage(x, 15);
 
-        // Smoothing
+
         float[] z = movingAverage(y, 5);
 
-        // Peak detection
         List<Integer> peaks = findPeaks(z, t);
 
         if (peaks.size() < 3) {
             return new Result(0, 0.1f, false);
         }
 
-        // Intervals between peaks
         List<Float> intervalsSec = new ArrayList<>();
         for (int i = 1; i < peaks.size(); i++) {
             long dt = t[peaks.get(i)] - t[peaks.get(i - 1)];
@@ -74,7 +71,6 @@ public class HeartRateEstimator {
 
         int bpm = Math.round(60f / mean);
 
-        // Quality: more peaks and stable intervals
         float stability = (float) Math.exp(-var * 10f); // heuristic
         float peakCountScore = Math.min(1f, peaks.size() / 8f);
         float quality = clamp01(0.2f + 0.5f * stability + 0.3f * peakCountScore);
@@ -112,10 +108,8 @@ public class HeartRateEstimator {
     private List<Integer> findPeaks(float[] z, long[] t) {
         List<Integer> peaks = new ArrayList<>();
 
-        // Minimum peak distance: 300 ms (200 BPM max)
         long minDistMs = 300;
 
-        // Dynamic threshold based on signal amplitude
         float amp = percentileAbs(z, 90);
         float thr = Math.max(0.01f, amp * 0.35f);
 
@@ -134,7 +128,7 @@ public class HeartRateEstimator {
                     peaks.add(i);
                     lastPeak = i;
                 } else {
-                    // Keep the higher peak if too close
+
                     if (z[i] > z[lastPeak]) {
                         peaks.set(peaks.size() - 1, i);
                         lastPeak = i;

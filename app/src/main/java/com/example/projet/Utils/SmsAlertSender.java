@@ -1,5 +1,6 @@
 package com.example.projet.Utils;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -128,6 +129,50 @@ public class SmsAlertSender {
             activity.startActivity(intent);
         } catch (Exception ex) {
             Log.w(TAG, "Failed to open SMS composer", ex);
+        }
+    }
+    public static void sendMessageToPrimary(Activity activity, int ownerUserId, String message) {
+        if (activity == null || message == null || message.trim().isEmpty()) return;
+
+        Context ctx = activity.getApplicationContext();
+        new Thread(() -> sendSmsToPrimaryContact(ctx, ownerUserId, message, activity)).start();
+    }
+
+    private static void sendSmsToPrimaryContact(Context ctx, int ownerUserId, String message, Activity activity) {
+        AppDatabase db = AppDatabase.getInstance(ctx);
+        EmergencyContact primary;
+        try {
+            primary = db.emergencyContactDao().getPrimaryForUser(ownerUserId);
+        } catch (Exception ex) {
+            Log.w(TAG, "Failed to load primary emergency contact", ex);
+            return;
+        }
+
+        if (primary == null || primary.phoneNumber == null || primary.phoneNumber.trim().isEmpty()) {
+            Log.i(TAG, "No primary emergency contact found");
+            return;
+        }
+
+        String phone = primary.phoneNumber.trim();
+
+        boolean canSend = ContextCompat.checkSelfPermission(ctx, Manifest.permission.SEND_SMS)
+                == PackageManager.PERMISSION_GRANTED;
+
+        if (canSend) {
+            try {
+                SmsManager smsManager = SmsManager.getDefault();
+                smsManager.sendTextMessage(phone, null, message, null, null);
+                Log.i(TAG, "SMS sent to primary: " + phone);
+            } catch (Exception ex) {
+                Log.w(TAG, "Failed to send SMS to primary, opening composer", ex);
+                if (activity != null) {
+                    activity.runOnUiThread(() -> openSmsComposer(activity, phone, message));
+                }
+            }
+        } else {
+            if (activity != null) {
+                activity.runOnUiThread(() -> openSmsComposer(activity, phone, message));
+            }
         }
     }
 }

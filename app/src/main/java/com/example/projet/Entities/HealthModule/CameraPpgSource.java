@@ -114,7 +114,7 @@ public class CameraPpgSource implements PpgSource {
         int w = image.getWidth();
         int h = image.getHeight();
 
-        // Sample every N pixels to reduce CPU
+
         int step = 4;
 
         long sumR = 0;
@@ -132,13 +132,12 @@ public class CameraPpgSource implements PpgSource {
                 int U = uBuf.get(uvIndex) & 0xFF;
                 int V = vBuf.get(uvIndex) & 0xFF;
 
-                // Convert YUV to RGB (BT.601)
+
                 int c = Y - 16;
                 int d = U - 128;
                 int e = V - 128;
 
                 int r = clamp255((298 * c + 409 * e + 128) >> 8);
-                // g, b not needed for classic red PPG mean
                 sumR += r;
                 count++;
             }

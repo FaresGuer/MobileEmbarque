@@ -46,25 +46,20 @@ public class SimulatedPpgSource implements PpgSource {
 
         float freq = bpm / 60f;
 
-        // Base PPG-like wave: sine with a sharper peak effect
         float s1 = (float) Math.sin(2.0 * Math.PI * freq * tSec);
         float s2 = (float) Math.sin(2.0 * Math.PI * freq * 2f * tSec) * 0.25f;
         float wave = s1 + s2;
 
-        // Drift (slow baseline movement)
         driftPhase += 0.01f;
         float drift = (float) Math.sin(driftPhase) * 0.03f;
 
-        // Noise
         float noise = (rnd.nextFloat() - 0.5f) * 0.05f;
 
-        // Occasional motion artifact spike
         float spike = 0f;
         if (rnd.nextFloat() < 0.01f) {
             spike = (rnd.nextFloat() - 0.5f) * 0.5f;
         }
 
-        // Normalize into 0..1
         float v = 0.55f + 0.12f * wave + drift + noise + spike;
         v = clamp01(v);
 

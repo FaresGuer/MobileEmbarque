@@ -313,6 +313,54 @@ public final class EmergencyContactDao_Impl implements EmergencyContactDao {
   }
 
   @Override
+  public EmergencyContact getPrimaryForUser(final int userId) {
+    final String _sql = "SELECT * FROM emergency_contacts WHERE ownerUserId = ? AND isPrimary = 1 LIMIT 1";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
+    int _argIndex = 1;
+    _statement.bindLong(_argIndex, userId);
+    __db.assertNotSuspendingTransaction();
+    final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+    try {
+      final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+      final int _cursorIndexOfOwnerUserId = CursorUtil.getColumnIndexOrThrow(_cursor, "ownerUserId");
+      final int _cursorIndexOfFriendUserId = CursorUtil.getColumnIndexOrThrow(_cursor, "friendUserId");
+      final int _cursorIndexOfDisplayName = CursorUtil.getColumnIndexOrThrow(_cursor, "displayName");
+      final int _cursorIndexOfPhoneNumber = CursorUtil.getColumnIndexOrThrow(_cursor, "phoneNumber");
+      final int _cursorIndexOfIsPrimary = CursorUtil.getColumnIndexOrThrow(_cursor, "isPrimary");
+      final EmergencyContact _result;
+      if (_cursor.moveToFirst()) {
+        _result = new EmergencyContact();
+        _result.id = _cursor.getInt(_cursorIndexOfId);
+        _result.ownerUserId = _cursor.getInt(_cursorIndexOfOwnerUserId);
+        if (_cursor.isNull(_cursorIndexOfFriendUserId)) {
+          _result.friendUserId = null;
+        } else {
+          _result.friendUserId = _cursor.getInt(_cursorIndexOfFriendUserId);
+        }
+        if (_cursor.isNull(_cursorIndexOfDisplayName)) {
+          _result.displayName = null;
+        } else {
+          _result.displayName = _cursor.getString(_cursorIndexOfDisplayName);
+        }
+        if (_cursor.isNull(_cursorIndexOfPhoneNumber)) {
+          _result.phoneNumber = null;
+        } else {
+          _result.phoneNumber = _cursor.getString(_cursorIndexOfPhoneNumber);
+        }
+        final int _tmp;
+        _tmp = _cursor.getInt(_cursorIndexOfIsPrimary);
+        _result.isPrimary = _tmp != 0;
+      } else {
+        _result = null;
+      }
+      return _result;
+    } finally {
+      _cursor.close();
+      _statement.release();
+    }
+  }
+
+  @Override
   public EmergencyContact getById(final int id) {
     final String _sql = "SELECT * FROM emergency_contacts WHERE id = ? LIMIT 1";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);

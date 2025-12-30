@@ -25,12 +25,17 @@ import com.example.projet.DataBase.AppDatabase;
 import com.example.projet.DataBase.UserSession;
 import com.example.projet.Entities.HealthModule.HeartRateLog;
 import com.example.projet.Entities.HealthModule.PpgSample;
-import com.example.projet.Fragments.Fall.FallFragment;
+
 import com.example.projet.R;
 import com.example.projet.Entities.HealthModule.CameraPpgSource;
 import com.example.projet.Entities.HealthModule.HeartRateEstimator;
 import com.example.projet.Entities.HealthModule.Interfaces.PpgSource;
 import com.example.projet.Entities.HealthModule.SimulatedPpgSource;
+import android.location.Location;
+
+import com.example.projet.Utils.SmsAlertSender;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 
 import androidx.camera.view.PreviewView;
 
@@ -41,10 +46,33 @@ public class HealthFragment extends Fragment {
         void onOpenMenu();
     }
 
-    private static final int REQ_CAMERA = 10;
     private MenuListener menuListener;
     private long lastSavedMs = 0;
+    private static final int HR_LOW = 50;
+    private static final int HR_HIGH = 120;
+    private static final float MIN_QUALITY = 0.65f;
+
+    private static final long ABNORMAL_PERSIST_MS = 8000L;
+    private static final long ALERT_COOLDOWN_MS = 120000L;
+
+    private Long abnormalSinceMs = null;
+    private long lastAlertMs = 0L;
+    private FusedLocationProviderClient fusedLocationClient;
     private PreviewView previewView;
+    private final ActivityResultLauncher<String[]> smsLocationPermissionLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.RequestMultiplePermissions(),
+                    result -> {
+                        boolean smsGranted = Boolean.TRUE.equals(result.get(Manifest.permission.SEND_SMS));
+                        boolean locGranted = Boolean.TRUE.equals(result.get(Manifest.permission.ACCESS_FINE_LOCATION));
+
+                        if (smsGranted && locGranted) {
+                            Toast.makeText(requireContext(), "Emergency permissions granted.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(requireContext(), "SMS and Location permissions are required for emergency alerts.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+            );
     private ActivityResultLauncher<String> cameraPermissionLauncher =
             registerForActivityResult(
                     new ActivityResultContracts.RequestPermission(),
@@ -82,6 +110,7 @@ public class HealthFragment extends Fragment {
 
             HeartRateEstimator.Result r = estimator.estimate();
             SaveLog(r, swVirtual.isChecked());
+            checkAndSendPrimarySms(r);
             if (r.valid) {
                 tvBpm.setText(String.valueOf(r.bpm));
                 tvQuality.setText("Quality " + String.format(Locale.getDefault(), "%.2f", r.quality));
@@ -99,7 +128,7 @@ public class HealthFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_heart_rate, container, false);
         ImageButton btnOpenMenu = v.findViewById(R.id.btnOpenMenu);
         ImageButton btnOpenLogs = v.findViewById(R.id.btnLogs);
-
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
         previewView = v.findViewById(R.id.previewView);
         tvBpm = v.findViewById(R.id.tvBpm);
         tvQuality = v.findViewById(R.id.tvQuality);
@@ -131,8 +160,9 @@ public class HealthFragment extends Fragment {
         boolean virtualMode = swVirtual.isChecked();
 
         if (virtualMode) {
-            source = new SimulatedPpgSource(30, 78f);
+            source = new SimulatedPpgSource(30, 140f);
             beginSource();
+            requestSmsLocation();
             return;
         }
 
@@ -144,8 +174,21 @@ public class HealthFragment extends Fragment {
 
         source = new CameraPpgSource(requireContext(), getViewLifecycleOwner(), previewView);
         beginSource();
+        requestSmsLocation();
     }
+    private void requestSmsLocation() {
+        boolean smsGranted = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.SEND_SMS)
+                == PackageManager.PERMISSION_GRANTED;
+        boolean locGranted = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED;
 
+        if (smsGranted && locGranted) return;
+
+        smsLocationPermissionLauncher.launch(new String[]{
+                Manifest.permission.SEND_SMS,
+                Manifest.permission.ACCESS_FINE_LOCATION
+        });
+    }
     private void beginSource() {
         running = true;
         btnStart.setText("Stop");
@@ -228,6 +271,79 @@ public class HealthFragment extends Fragment {
 
         AppDatabase db = AppDatabase.getInstance(requireContext());
         new Thread(() -> db.heartRateLogDao().insert(log)).start();
+    }
+    private void checkAndSendPrimarySms(HeartRateEstimator.Result r) {
+        if (!running) return;
+        if (r == null || !r.valid) {
+            abnormalSinceMs = null;
+            return;
+        }
+        if (r.quality < MIN_QUALITY) {
+            abnormalSinceMs = null;
+            return;
+        }
+
+        boolean abnormal = (r.bpm < HR_LOW) || (r.bpm > HR_HIGH);
+        long now = System.currentTimeMillis();
+
+        if (!abnormal) {
+            abnormalSinceMs = null;
+            return;
+        }
+
+        if (abnormalSinceMs == null) abnormalSinceMs = now;
+
+        if (now - abnormalSinceMs < ABNORMAL_PERSIST_MS) return;
+        if (now - lastAlertMs < ALERT_COOLDOWN_MS) return;
+
+        lastAlertMs = now;
+        sendPrimarySmsWithLocation(r);
+    }
+
+    private void sendPrimarySmsWithLocation(HeartRateEstimator.Result r) {
+        if (UserSession.getUser() == null) return;
+
+        boolean smsGranted = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.SEND_SMS)
+                == PackageManager.PERMISSION_GRANTED;
+        boolean locGranted = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED;
+
+        if (!smsGranted || !locGranted) {
+            Toast.makeText(requireContext(), "SMS and Location permissions are required for emergency alerts.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        int userId = UserSession.getUser().getId();
+
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(location -> {
+                    String msg = buildHrEmergencyMessage(r, location);
+                    SmsAlertSender.sendMessageToPrimary(requireActivity(), userId, msg);
+                })
+                .addOnFailureListener(e -> {
+                    String msg = buildHrEmergencyMessage(r, null);
+                    SmsAlertSender.sendMessageToPrimary(requireActivity(), userId, msg);
+                });
+    }
+
+    private String buildHrEmergencyMessage(HeartRateEstimator.Result r, Location location) {
+        String state = (r.bpm < HR_LOW) ? "LOW" : "HIGH";
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Emergency: Heart rate ").append(state)
+                .append(" (").append(r.bpm).append(" bpm). ")
+                .append("Quality ").append(String.format(Locale.getDefault(), "%.2f", r.quality)).append(". ");
+
+        if (location != null) {
+            double lat = location.getLatitude();
+            double lon = location.getLongitude();
+            sb.append("Location: ").append(lat).append(", ").append(lon).append(". ");
+            sb.append("Map: ").append("https://maps.google.com/?q=").append(lat).append(",").append(lon);
+        } else {
+            sb.append("Location unavailable.");
+        }
+
+        return sb.toString();
     }
 
 }

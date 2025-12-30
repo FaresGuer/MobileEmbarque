@@ -21,7 +21,8 @@ public interface EmergencyContactDao {
 
     @Query("SELECT * FROM emergency_contacts WHERE ownerUserId = :userId ORDER BY isPrimary DESC, displayName ASC")
     List<EmergencyContact> getForUser(int userId);
-
+    @Query("SELECT * FROM emergency_contacts WHERE ownerUserId = :userId AND isPrimary = 1 LIMIT 1")
+    EmergencyContact getPrimaryForUser(int userId);
     @Query("SELECT * FROM emergency_contacts WHERE id = :id LIMIT 1")
     EmergencyContact getById(int id);
 
