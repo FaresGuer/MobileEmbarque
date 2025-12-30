@@ -13,6 +13,8 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
 import com.example.projet.DAO.EmergencyContactDao;
 import com.example.projet.DAO.EmergencyContactDao_Impl;
+import com.example.projet.DAO.EnvironmentAlertDao;
+import com.example.projet.DAO.EnvironmentAlertDao_Impl;
 import com.example.projet.DAO.FriendDao;
 import com.example.projet.DAO.FriendDao_Impl;
 import com.example.projet.DAO.HeartRateLogDao;
@@ -43,10 +45,12 @@ public final class AppDatabase_Impl extends AppDatabase {
 
   private volatile HeartRateLogDao _heartRateLogDao;
 
+  private volatile EnvironmentAlertDao _environmentAlertDao;
+
   @Override
   @NonNull
   protected SupportSQLiteOpenHelper createOpenHelper(@NonNull final DatabaseConfiguration config) {
-    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(2) {
+    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(3) {
       @Override
       public void createAllTables(@NonNull final SupportSQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS `users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `username` TEXT, `email` TEXT, `phoneNumber` TEXT, `dateOfBirth` TEXT, `avatarPath` TEXT, `password` TEXT)");
@@ -60,8 +64,9 @@ public final class AppDatabase_Impl extends AppDatabase {
         db.execSQL("CREATE INDEX IF NOT EXISTS `index_heart_rate_logs_ownerUserId` ON `heart_rate_logs` (`ownerUserId`)");
         db.execSQL("CREATE INDEX IF NOT EXISTS `index_heart_rate_logs_timestampMs` ON `heart_rate_logs` (`timestampMs`)");
         db.execSQL("CREATE INDEX IF NOT EXISTS `index_heart_rate_logs_ownerUserId_timestampMs` ON `heart_rate_logs` (`ownerUserId`, `timestampMs`)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `environment_alerts` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `timestamp` INTEGER NOT NULL, `sensor` TEXT, `value` TEXT, `severity` TEXT, `message` TEXT)");
         db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c0e188d0e31e8295d8f3a65eac98c9ac')");
+        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7945daa4643d89847030f0ea6a0596e3')");
       }
 
       @Override
@@ -70,6 +75,7 @@ public final class AppDatabase_Impl extends AppDatabase {
         db.execSQL("DROP TABLE IF EXISTS `emergency_contacts`");
         db.execSQL("DROP TABLE IF EXISTS `friends`");
         db.execSQL("DROP TABLE IF EXISTS `heart_rate_logs`");
+        db.execSQL("DROP TABLE IF EXISTS `environment_alerts`");
         final List<? extends RoomDatabase.Callback> _callbacks = mCallbacks;
         if (_callbacks != null) {
           for (RoomDatabase.Callback _callback : _callbacks) {
@@ -186,9 +192,25 @@ public final class AppDatabase_Impl extends AppDatabase {
                   + " Expected:\n" + _infoHeartRateLogs + "\n"
                   + " Found:\n" + _existingHeartRateLogs);
         }
+        final HashMap<String, TableInfo.Column> _columnsEnvironmentAlerts = new HashMap<String, TableInfo.Column>(6);
+        _columnsEnvironmentAlerts.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsEnvironmentAlerts.put("timestamp", new TableInfo.Column("timestamp", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsEnvironmentAlerts.put("sensor", new TableInfo.Column("sensor", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsEnvironmentAlerts.put("value", new TableInfo.Column("value", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsEnvironmentAlerts.put("severity", new TableInfo.Column("severity", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsEnvironmentAlerts.put("message", new TableInfo.Column("message", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysEnvironmentAlerts = new HashSet<TableInfo.ForeignKey>(0);
+        final HashSet<TableInfo.Index> _indicesEnvironmentAlerts = new HashSet<TableInfo.Index>(0);
+        final TableInfo _infoEnvironmentAlerts = new TableInfo("environment_alerts", _columnsEnvironmentAlerts, _foreignKeysEnvironmentAlerts, _indicesEnvironmentAlerts);
+        final TableInfo _existingEnvironmentAlerts = TableInfo.read(db, "environment_alerts");
+        if (!_infoEnvironmentAlerts.equals(_existingEnvironmentAlerts)) {
+          return new RoomOpenHelper.ValidationResult(false, "environment_alerts(com.example.projet.Entities.EnvironmentAlert).\n"
+                  + " Expected:\n" + _infoEnvironmentAlerts + "\n"
+                  + " Found:\n" + _existingEnvironmentAlerts);
+        }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "c0e188d0e31e8295d8f3a65eac98c9ac", "42b2fe029cc313e90f01de909c691665");
+    }, "7945daa4643d89847030f0ea6a0596e3", "c984d5da8063369b86d15ba7d32b6cd8");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(config.context).name(config.name).callback(_openCallback).build();
     final SupportSQLiteOpenHelper _helper = config.sqliteOpenHelperFactory.create(_sqliteConfig);
     return _helper;
@@ -199,7 +221,7 @@ public final class AppDatabase_Impl extends AppDatabase {
   protected InvalidationTracker createInvalidationTracker() {
     final HashMap<String, String> _shadowTablesMap = new HashMap<String, String>(0);
     final HashMap<String, Set<String>> _viewTables = new HashMap<String, Set<String>>(0);
-    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "users","emergency_contacts","friends","heart_rate_logs");
+    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "users","emergency_contacts","friends","heart_rate_logs","environment_alerts");
   }
 
   @Override
@@ -212,6 +234,7 @@ public final class AppDatabase_Impl extends AppDatabase {
       _db.execSQL("DELETE FROM `emergency_contacts`");
       _db.execSQL("DELETE FROM `friends`");
       _db.execSQL("DELETE FROM `heart_rate_logs`");
+      _db.execSQL("DELETE FROM `environment_alerts`");
       super.setTransactionSuccessful();
     } finally {
       super.endTransaction();
@@ -230,6 +253,7 @@ public final class AppDatabase_Impl extends AppDatabase {
     _typeConvertersMap.put(EmergencyContactDao.class, EmergencyContactDao_Impl.getRequiredConverters());
     _typeConvertersMap.put(FriendDao.class, FriendDao_Impl.getRequiredConverters());
     _typeConvertersMap.put(HeartRateLogDao.class, HeartRateLogDao_Impl.getRequiredConverters());
+    _typeConvertersMap.put(EnvironmentAlertDao.class, EnvironmentAlertDao_Impl.getRequiredConverters());
     return _typeConvertersMap;
   }
 
@@ -300,6 +324,20 @@ public final class AppDatabase_Impl extends AppDatabase {
           _heartRateLogDao = new HeartRateLogDao_Impl(this);
         }
         return _heartRateLogDao;
+      }
+    }
+  }
+
+  @Override
+  public EnvironmentAlertDao environmentAlertDao() {
+    if (_environmentAlertDao != null) {
+      return _environmentAlertDao;
+    } else {
+      synchronized(this) {
+        if(_environmentAlertDao == null) {
+          _environmentAlertDao = new EnvironmentAlertDao_Impl(this);
+        }
+        return _environmentAlertDao;
       }
     }
   }

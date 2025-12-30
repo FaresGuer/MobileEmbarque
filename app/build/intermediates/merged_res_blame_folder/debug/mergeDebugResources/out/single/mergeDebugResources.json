@@ -20,12 +20,12 @@
         "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-main-48:\\layout\\item_friend_user.xml"
     },
     {
-        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-debug-46:\\anim_bounce.xml.flat",
-        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-main-48:\\anim\\bounce.xml"
-    },
-    {
         "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-debug-46:\\layout_fragment_friends.xml.flat",
         "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-main-48:\\layout\\fragment_friends.xml"
+    },
+    {
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-debug-46:\\anim_bounce.xml.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-main-48:\\anim\\bounce.xml"
     },
     {
         "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-debug-46:\\mipmap-xhdpi_ic_launcher.webp.flat",
@@ -60,12 +60,12 @@
         "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-main-48:\\layout\\fragment_health.xml"
     },
     {
-        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-debug-46:\\drawable_call.png.flat",
-        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-main-48:\\drawable\\call.png"
-    },
-    {
         "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-debug-46:\\drawable_bg_preview_border.xml.flat",
         "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-main-48:\\drawable\\bg_preview_border.xml"
+    },
+    {
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-debug-46:\\drawable_call.png.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-main-48:\\drawable\\call.png"
     },
     {
         "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-debug-46:\\drawable_friends.png.flat",
@@ -96,12 +96,12 @@
         "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-main-48:\\drawable\\enviroment.png"
     },
     {
-        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-debug-46:\\xml_data_extraction_rules.xml.flat",
-        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-main-48:\\xml\\data_extraction_rules.xml"
-    },
-    {
         "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-debug-46:\\mipmap-xxhdpi_ic_launcher_round.webp.flat",
         "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-main-48:\\mipmap-xxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-debug-46:\\xml_data_extraction_rules.xml.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-main-48:\\xml\\data_extraction_rules.xml"
     },
     {
         "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-debug-46:\\drawable_ic_back.xml.flat",
@@ -136,12 +136,20 @@
         "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-main-48:\\mipmap-xxxhdpi\\ic_launcher.webp"
     },
     {
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-debug-46:\\layout_fragment_alerts_history.xml.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-main-48:\\layout\\fragment_alerts_history.xml"
+    },
+    {
         "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-debug-46:\\layout_fragment_home.xml.flat",
         "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-main-48:\\layout\\fragment_home.xml"
     },
     {
         "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-debug-46:\\drawable_friendrequest.png.flat",
         "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-main-48:\\drawable\\friendrequest.png"
+    },
+    {
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-debug-46:\\drawable_mountain.png.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-main-48:\\drawable\\mountain.png"
     },
     {
         "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-debug-46:\\drawable_controlsystem.png.flat",
@@ -154,6 +162,10 @@
     {
         "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-debug-46:\\mipmap-xxhdpi_ic_launcher.webp.flat",
         "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-main-48:\\mipmap-xxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-debug-46:\\layout_row_environment_alert.xml.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-main-48:\\layout\\row_environment_alert.xml"
     },
     {
         "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-debug-46:\\layout_fragment_add_edit_emergency_contact.xml.flat",
@@ -198,10 +210,6 @@
     {
         "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-debug-46:\\mipmap-hdpi_ic_launcher_round.webp.flat",
         "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-main-48:\\mipmap-hdpi\\ic_launcher_round.webp"
-    },
-    {
-        "merged": "com.example.projet.app-debug-46:/layout_fragment_heart_rate.xml.flat",
-        "source": "com.example.projet.app-main-48:/layout/fragment_heart_rate.xml"
     },
     {
         "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.projet.app-debug-46:\\drawable_ic_launcher_foreground.xml.flat",

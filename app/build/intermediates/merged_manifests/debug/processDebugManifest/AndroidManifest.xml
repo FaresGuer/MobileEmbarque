@@ -16,6 +16,17 @@
     <uses-feature
         android:name="android.hardware.camera.flash"
         android:required="false" />
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Permission to send SMS (may require runtime grant on modern Android) -->
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <!-- Optional location permissions used to attach last-known location in SMS alerts (requested at runtime) -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <permission
         android:name="com.example.projet.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
