@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -27,11 +28,14 @@ public class SafetyLogsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_safety_logs, container, false);
+        ImageButton btnBack = v.findViewById(R.id.btnBack);
         rv = v.findViewById(R.id.rvSafetyLogs);
         rv.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new SafetyLogsAdapter(new ArrayList<>());
         rv.setAdapter(adapter);
-
+        btnBack.setOnClickListener(view ->
+                requireActivity().getSupportFragmentManager().popBackStack()
+        );
         load();
         return v;
     }

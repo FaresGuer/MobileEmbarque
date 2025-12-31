@@ -154,7 +154,7 @@ public class FallFragment extends Fragment {
             return;
         }
 
-        requestEmergencyPermissionsIfNeeded();
+        requestEmergencyPermissions();
 
         running = true;
         btnStartStop.setText("Stop");
@@ -362,7 +362,7 @@ public class FallFragment extends Fragment {
         }).start();
     }
 
-    private void requestEmergencyPermissionsIfNeeded() {
+    private void requestEmergencyPermissions() {
         boolean smsGranted = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.SEND_SMS)
                 == PackageManager.PERMISSION_GRANTED;
         boolean locGranted = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
