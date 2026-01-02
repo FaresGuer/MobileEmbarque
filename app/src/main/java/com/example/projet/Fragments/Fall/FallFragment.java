@@ -105,7 +105,7 @@ public class FallFragment extends Fragment {
         btnSimDrop = v.findViewById(R.id.btnSimDrop);
         btnSimWalk = v.findViewById(R.id.btnSimWalk);
         btnSimIdle = v.findViewById(R.id.btnSimIdle);
-        btnLogs = v.findViewById(R.id.btnSafetyLogs);
+        ImageButton btnOpenLogs = v.findViewById(R.id.btnSafetyLogs);
 
         tvStatus = v.findViewById(R.id.tvSafetyStatus);
         tvMag = v.findViewById(R.id.tvSafetyMag);
@@ -122,7 +122,7 @@ public class FallFragment extends Fragment {
             else stopMonitoring();
         });
 
-        btnLogs.setOnClickListener(view -> {
+        btnOpenLogs.setOnClickListener(view -> {
             requireActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, new SafetyLogsFragment())
