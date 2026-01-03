@@ -30,11 +30,6 @@
           <theme>@style/Theme.Projet</theme>
         </config>
       </layout>
-      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_health.xml">
-        <config>
-          <theme>@style/Theme.Projet</theme>
-        </config>
-      </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_heart_rate.xml">
         <config>
           <theme>@style/Theme.Projet</theme>
@@ -67,8 +62,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="066fd15d-4717-410e-9feb-13519d9463e7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_health.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.13/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.13/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/generated/ap_generated_sources/debug/out/com/example/projet/DAO/EmergencyContactDao_Impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/generated/ap_generated_sources/debug/out/com/example/projet/DAO/EmergencyContactDao_Impl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/generated/ap_generated_sources/debug/out/com/example/projet/DAO/FriendDao_Impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/generated/ap_generated_sources/debug/out/com/example/projet/DAO/FriendDao_Impl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/generated/ap_generated_sources/debug/out/com/example/projet/DAO/HeartRateLogDao_Impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/generated/ap_generated_sources/debug/out/com/example/projet/DAO/HeartRateLogDao_Impl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/generated/ap_generated_sources/debug/out/com/example/projet/DAO/UserDao_Impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/generated/ap_generated_sources/debug/out/com/example/projet/DAO/UserDao_Impl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/generated/ap_generated_sources/debug/out/com/example/projet/DataBase/AppDatabase_Impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/generated/ap_generated_sources/debug/out/com/example/projet/DataBase/AppDatabase_Impl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/compile_and_runtime_not_namespaced_r_class_jar/debug/processDebugResources/R.jar" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/compile_and_runtime_not_namespaced_r_class_jar/debug/processDebugResources/R.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -212,12 +214,12 @@
       <map>
         <entry key="com.example.projet">
           <value>
-            <CheckInfo lastCheckTimestamp="1767363149587" />
+            <CheckInfo lastCheckTimestamp="1767459829395" />
           </value>
         </entry>
         <entry key="com.example.projet.test">
           <value>
-            <CheckInfo lastCheckTimestamp="1767363149593" />
+            <CheckInfo lastCheckTimestamp="1767459829396" />
           </value>
         </entry>
       </map>

@@ -15,6 +15,8 @@ import com.example.projet.DAO.EmergencyContactDao;
 import com.example.projet.DAO.EmergencyContactDao_Impl;
 import com.example.projet.DAO.EnvironmentAlertDao;
 import com.example.projet.DAO.EnvironmentAlertDao_Impl;
+import com.example.projet.DAO.FallEventDao;
+import com.example.projet.DAO.FallEventDao_Impl;
 import com.example.projet.DAO.FriendDao;
 import com.example.projet.DAO.FriendDao_Impl;
 import com.example.projet.DAO.HeartRateLogDao;
@@ -47,10 +49,12 @@ public final class AppDatabase_Impl extends AppDatabase {
 
   private volatile EnvironmentAlertDao _environmentAlertDao;
 
+  private volatile FallEventDao _fallEventDao;
+
   @Override
   @NonNull
   protected SupportSQLiteOpenHelper createOpenHelper(@NonNull final DatabaseConfiguration config) {
-    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(3) {
+    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(4) {
       @Override
       public void createAllTables(@NonNull final SupportSQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS `users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `username` TEXT, `email` TEXT, `phoneNumber` TEXT, `dateOfBirth` TEXT, `avatarPath` TEXT, `password` TEXT)");
@@ -65,8 +69,9 @@ public final class AppDatabase_Impl extends AppDatabase {
         db.execSQL("CREATE INDEX IF NOT EXISTS `index_heart_rate_logs_timestampMs` ON `heart_rate_logs` (`timestampMs`)");
         db.execSQL("CREATE INDEX IF NOT EXISTS `index_heart_rate_logs_ownerUserId_timestampMs` ON `heart_rate_logs` (`ownerUserId`, `timestampMs`)");
         db.execSQL("CREATE TABLE IF NOT EXISTS `environment_alerts` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `timestamp` INTEGER NOT NULL, `sensor` TEXT, `value` TEXT, `severity` TEXT, `message` TEXT)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `fall_event` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `ownerUserId` INTEGER NOT NULL, `timestampMs` INTEGER NOT NULL, `type` TEXT, `peakG` REAL NOT NULL, `lat` REAL, `lon` REAL, `smsSent` INTEGER NOT NULL, `userCancelled` INTEGER NOT NULL)");
         db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7945daa4643d89847030f0ea6a0596e3')");
+        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '106723f2ef1206dc986b7a9a9ef4f1f8')");
       }
 
       @Override
@@ -76,6 +81,7 @@ public final class AppDatabase_Impl extends AppDatabase {
         db.execSQL("DROP TABLE IF EXISTS `friends`");
         db.execSQL("DROP TABLE IF EXISTS `heart_rate_logs`");
         db.execSQL("DROP TABLE IF EXISTS `environment_alerts`");
+        db.execSQL("DROP TABLE IF EXISTS `fall_event`");
         final List<? extends RoomDatabase.Callback> _callbacks = mCallbacks;
         if (_callbacks != null) {
           for (RoomDatabase.Callback _callback : _callbacks) {
@@ -208,9 +214,28 @@ public final class AppDatabase_Impl extends AppDatabase {
                   + " Expected:\n" + _infoEnvironmentAlerts + "\n"
                   + " Found:\n" + _existingEnvironmentAlerts);
         }
+        final HashMap<String, TableInfo.Column> _columnsFallEvent = new HashMap<String, TableInfo.Column>(9);
+        _columnsFallEvent.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsFallEvent.put("ownerUserId", new TableInfo.Column("ownerUserId", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsFallEvent.put("timestampMs", new TableInfo.Column("timestampMs", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsFallEvent.put("type", new TableInfo.Column("type", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsFallEvent.put("peakG", new TableInfo.Column("peakG", "REAL", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsFallEvent.put("lat", new TableInfo.Column("lat", "REAL", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsFallEvent.put("lon", new TableInfo.Column("lon", "REAL", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsFallEvent.put("smsSent", new TableInfo.Column("smsSent", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsFallEvent.put("userCancelled", new TableInfo.Column("userCancelled", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysFallEvent = new HashSet<TableInfo.ForeignKey>(0);
+        final HashSet<TableInfo.Index> _indicesFallEvent = new HashSet<TableInfo.Index>(0);
+        final TableInfo _infoFallEvent = new TableInfo("fall_event", _columnsFallEvent, _foreignKeysFallEvent, _indicesFallEvent);
+        final TableInfo _existingFallEvent = TableInfo.read(db, "fall_event");
+        if (!_infoFallEvent.equals(_existingFallEvent)) {
+          return new RoomOpenHelper.ValidationResult(false, "fall_event(com.example.projet.Entities.SafetyModule.FallEvent).\n"
+                  + " Expected:\n" + _infoFallEvent + "\n"
+                  + " Found:\n" + _existingFallEvent);
+        }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "7945daa4643d89847030f0ea6a0596e3", "c984d5da8063369b86d15ba7d32b6cd8");
+    }, "106723f2ef1206dc986b7a9a9ef4f1f8", "04883264e7befdbcb89448b1161839d5");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(config.context).name(config.name).callback(_openCallback).build();
     final SupportSQLiteOpenHelper _helper = config.sqliteOpenHelperFactory.create(_sqliteConfig);
     return _helper;
@@ -221,7 +246,7 @@ public final class AppDatabase_Impl extends AppDatabase {
   protected InvalidationTracker createInvalidationTracker() {
     final HashMap<String, String> _shadowTablesMap = new HashMap<String, String>(0);
     final HashMap<String, Set<String>> _viewTables = new HashMap<String, Set<String>>(0);
-    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "users","emergency_contacts","friends","heart_rate_logs","environment_alerts");
+    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "users","emergency_contacts","friends","heart_rate_logs","environment_alerts","fall_event");
   }
 
   @Override
@@ -235,6 +260,7 @@ public final class AppDatabase_Impl extends AppDatabase {
       _db.execSQL("DELETE FROM `friends`");
       _db.execSQL("DELETE FROM `heart_rate_logs`");
       _db.execSQL("DELETE FROM `environment_alerts`");
+      _db.execSQL("DELETE FROM `fall_event`");
       super.setTransactionSuccessful();
     } finally {
       super.endTransaction();
@@ -254,6 +280,7 @@ public final class AppDatabase_Impl extends AppDatabase {
     _typeConvertersMap.put(FriendDao.class, FriendDao_Impl.getRequiredConverters());
     _typeConvertersMap.put(HeartRateLogDao.class, HeartRateLogDao_Impl.getRequiredConverters());
     _typeConvertersMap.put(EnvironmentAlertDao.class, EnvironmentAlertDao_Impl.getRequiredConverters());
+    _typeConvertersMap.put(FallEventDao.class, FallEventDao_Impl.getRequiredConverters());
     return _typeConvertersMap;
   }
 
@@ -338,6 +365,20 @@ public final class AppDatabase_Impl extends AppDatabase {
           _environmentAlertDao = new EnvironmentAlertDao_Impl(this);
         }
         return _environmentAlertDao;
+      }
+    }
+  }
+
+  @Override
+  public FallEventDao fallEventDao() {
+    if (_fallEventDao != null) {
+      return _fallEventDao;
+    } else {
+      synchronized(this) {
+        if(_fallEventDao == null) {
+          _fallEventDao = new FallEventDao_Impl(this);
+        }
+        return _fallEventDao;
       }
     }
   }
