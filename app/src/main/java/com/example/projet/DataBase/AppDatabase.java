@@ -6,12 +6,14 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
+import com.example.projet.DAO.AlertHistoryDao;
 import com.example.projet.DAO.EmergencyContactDao;
 import com.example.projet.DAO.EnvironmentAlertDao;
 import com.example.projet.DAO.FallEventDao;
 import com.example.projet.DAO.FriendDao;
 import com.example.projet.DAO.HeartRateLogDao;
 import com.example.projet.DAO.UserDao;
+import com.example.projet.Entities.AlertHistory;
 import com.example.projet.Entities.EmergencyContact;
 import com.example.projet.Entities.SafetyModule.FallEvent;
 import com.example.projet.Entities.EnvironmentAlert;
@@ -19,7 +21,7 @@ import com.example.projet.Entities.Friend;
 import com.example.projet.Entities.HealthModule.HeartRateLog;
 import com.example.projet.Entities.User;
 
-@Database(entities = {User.class, EmergencyContact.class, Friend.class, HeartRateLog.class, EnvironmentAlert.class,FallEvent.class}, version = 4)
+@Database(entities = {User.class, EmergencyContact.class, Friend.class, HeartRateLog.class, EnvironmentAlert.class,FallEvent.class, AlertHistory.class}, version = 5)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -31,6 +33,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract HeartRateLogDao heartRateLogDao();
     public abstract EnvironmentAlertDao environmentAlertDao();
     public abstract FallEventDao fallEventDao();
+    public abstract AlertHistoryDao alertHistoryDao();
 
     public static synchronized AppDatabase getInstance(Context context) {
         if (instance == null) {
