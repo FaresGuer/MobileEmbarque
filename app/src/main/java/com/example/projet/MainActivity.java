@@ -14,6 +14,7 @@ import com.example.projet.DataBase.AppDatabase;
 import com.example.projet.DataBase.PrefsHelper;
 import com.example.projet.DataBase.UserSession;
 import com.example.projet.Entities.User;
+import com.example.projet.Fragments.AlertHistory.AlertHistoryFragment;
 import com.example.projet.Fragments.Control.ControlFragment;
 import com.example.projet.Fragments.Environment.EnvironmentFragment;
 import com.example.projet.Fragments.Fall.FallFragment;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity
         ControlFragment.MenuListener,
         EnvironmentFragment.MenuListener,
         FallFragment.MenuListener,
+        AlertHistoryFragment.MenuListener,
         HealthFragment.MenuListener,
         RegisterFragment.RegisterListener {
 
@@ -103,7 +105,7 @@ public class MainActivity extends AppCompatActivity
             drawerLayout.closeDrawer(GravityCompat.START);
             v.postDelayed(() -> {
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, new ControlFragment())
+                        .replace(R.id.fragment_container, new AlertHistoryFragment())
                         .addToBackStack(null)
                         .commit();
             }, 200);

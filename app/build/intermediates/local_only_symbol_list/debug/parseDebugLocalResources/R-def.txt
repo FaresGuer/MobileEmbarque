@@ -88,12 +88,17 @@ id swVirtual
 id swVirtualMotion
 id switchEnableAlerts
 id tPassword
+id tvAlertLocation
+id tvAlertMessage
 id tvAlertSubtitle
+id tvAlertTimestamp
 id tvAlertTitle
+id tvAlertType
 id tvBpm
 id tvBpmLabel
 id tvCountdown
 id tvEmail
+id tvEmpty
 id tvFav
 id tvHint
 id tvLastUpdated
@@ -135,10 +140,12 @@ id tvTitle
 id tvUser
 id tvVirtualLabel
 id tvWelcome
+id viewSeverityIndicator
 layout activity_main
 layout dialog_fall_countdown
 layout fragment_add_edit_emergency_contact
 layout fragment_add_edit_friend
+layout fragment_alert_history
 layout fragment_alerts_history
 layout fragment_control
 layout fragment_emergency_contacts
@@ -146,6 +153,7 @@ layout fragment_environment
 layout fragment_fall
 layout fragment_friend_requests
 layout fragment_friends
+layout fragment_health
 layout fragment_heart_rate
 layout fragment_heart_rate_logs
 layout fragment_home
@@ -157,6 +165,7 @@ layout item_fall_log
 layout item_friend_request
 layout item_friend_user
 layout item_heart_rate_log
+layout row_alert_history
 layout row_environment_alert
 menu menu_friend_item
 mipmap ic_launcher
