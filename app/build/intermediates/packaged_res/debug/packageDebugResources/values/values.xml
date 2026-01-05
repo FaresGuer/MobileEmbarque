@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <string name="app_name">Trackini</string>
+    <string name="cancel">CANCEL</string>
+    <string name="last_updated_prefix">Last updated: %1$s</string>
+    <string name="no_reading">No reading</string>
+    <string name="send">Send</string>
+    <string name="send_sms_alert_message">This will send SMS to your friends.</string>
+    <string name="send_sms_alert_title">Send SMS alert</string>
+    <string name="send_sms_permission_rationale">The app needs SMS permission to send alerts automatically.</string>
+    <string name="sms_snackbar_text">Send alert to friends? Tap CANCEL to stop</string>
+    <string name="unavailable">Unavailable</string>
+    <style name="Base.Theme.Projet" parent="Theme.Material3.DayNight.NoActionBar">
+        
+        
+    </style>
+    <style name="Theme.Projet" parent="Base.Theme.Projet"/>
+</resources>

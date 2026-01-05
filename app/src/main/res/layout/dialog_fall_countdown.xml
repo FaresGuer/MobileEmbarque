@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/tvCountdown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sending emergency alert in 20 seconds"
+        android:textSize="16sp"
+        android:textColor="#222222"
+        android:gravity="center"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/btnImOk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="I’m OK"
+        android:textAllCaps="false"
+        android:textColor="#222222"
+        android:backgroundTint="#F5F5F5" />
+
+</LinearLayout>

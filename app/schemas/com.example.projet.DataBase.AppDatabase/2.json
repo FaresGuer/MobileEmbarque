@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "c6c4ebe777cb83a6c5f98128acd0dd3b",
+    "identityHash": "c0e188d0e31e8295d8f3a65eac98c9ac",
     "entities": [
       {
         "tableName": "users",
@@ -194,8 +194,8 @@
         "foreignKeys": []
       },
       {
-        "tableName": "environment_alerts",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `timestamp` INTEGER NOT NULL, `sensor` TEXT, `value` TEXT, `severity` TEXT, `message` TEXT)",
+        "tableName": "heart_rate_logs",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `ownerUserId` INTEGER NOT NULL, `timestampMs` INTEGER NOT NULL, `bpm` INTEGER NOT NULL, `quality` REAL NOT NULL, `isAbnormal` INTEGER NOT NULL, `isVirtual` INTEGER NOT NULL, `contextTag` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -204,32 +204,44 @@
             "notNull": true
           },
           {
-            "fieldPath": "timestamp",
-            "columnName": "timestamp",
+            "fieldPath": "ownerUserId",
+            "columnName": "ownerUserId",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "sensor",
-            "columnName": "sensor",
-            "affinity": "TEXT",
-            "notNull": false
+            "fieldPath": "timestampMs",
+            "columnName": "timestampMs",
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
-            "fieldPath": "value",
-            "columnName": "value",
-            "affinity": "TEXT",
-            "notNull": false
+            "fieldPath": "bpm",
+            "columnName": "bpm",
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
-            "fieldPath": "severity",
-            "columnName": "severity",
-            "affinity": "TEXT",
-            "notNull": false
+            "fieldPath": "quality",
+            "columnName": "quality",
+            "affinity": "REAL",
+            "notNull": true
           },
           {
-            "fieldPath": "message",
-            "columnName": "message",
+            "fieldPath": "isAbnormal",
+            "columnName": "isAbnormal",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isVirtual",
+            "columnName": "isVirtual",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "contextTag",
+            "columnName": "contextTag",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -240,14 +252,43 @@
             "id"
           ]
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_heart_rate_logs_ownerUserId",
+            "unique": false,
+            "columnNames": [
+              "ownerUserId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_heart_rate_logs_ownerUserId` ON `${TABLE_NAME}` (`ownerUserId`)"
+          },
+          {
+            "name": "index_heart_rate_logs_timestampMs",
+            "unique": false,
+            "columnNames": [
+              "timestampMs"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_heart_rate_logs_timestampMs` ON `${TABLE_NAME}` (`timestampMs`)"
+          },
+          {
+            "name": "index_heart_rate_logs_ownerUserId_timestampMs",
+            "unique": false,
+            "columnNames": [
+              "ownerUserId",
+              "timestampMs"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_heart_rate_logs_ownerUserId_timestampMs` ON `${TABLE_NAME}` (`ownerUserId`, `timestampMs`)"
+          }
+        ],
         "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c6c4ebe777cb83a6c5f98128acd0dd3b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c0e188d0e31e8295d8f3a65eac98c9ac')"
     ]
   }
 }

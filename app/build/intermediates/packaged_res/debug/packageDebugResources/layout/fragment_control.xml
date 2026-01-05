@@ -53,7 +53,7 @@
             android:id="@+id/tvSmallHint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Health Module here"
+            android:text="Control Module here"
             android:textSize="13sp"
             android:textColor="#999999"
             android:layout_marginTop="18dp" />
