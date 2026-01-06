@@ -145,7 +145,6 @@
                 android:id="@+id/etDob"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="YYYY-MM-DD"
                 android:background="@null"
                 android:paddingVertical="6dp"
                 android:textSize="15sp"
