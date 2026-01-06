@@ -145,12 +145,14 @@
                 android:id="@+id/etDob"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="YYYY-MM-DD"
                 android:background="@null"
+                android:focusable="false"
+                android:clickable="true"
+                android:cursorVisible="false"
                 android:paddingVertical="6dp"
                 android:textSize="15sp"
                 android:textColor="#222222"
-                android:inputType="date"/>
+                android:inputType="none"/>
 
             <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD"/>
 

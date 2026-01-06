@@ -2,6 +2,7 @@ package com.example.projet.Fragments.User;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -31,6 +32,7 @@ import com.example.projet.R;
 import android.util.Patterns;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Locale;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -81,32 +83,30 @@ public class RegisterFragment extends Fragment {
         etPassword = view.findViewById(R.id.etPassword);
         Button btnCreate = view.findViewById(R.id.btnCreate);
         ImageButton btnBack = view.findViewById(R.id.btnBack);
-        etDob.addTextChangedListener(new TextWatcher() {
-            private boolean isEditing = false;
+        etDob.setOnClickListener(v -> {
+            Calendar c = Calendar.getInstance();
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            DatePickerDialog dlg = new DatePickerDialog(
+                    requireContext(),
+                    R.style.AppDatePickerTheme,
+                    (datePicker, y, m, d) -> {
+                        String formatted = String.format(
+                                Locale.getDefault(),
+                                "%04d-%02d-%02d",
+                                y, (m + 1), d
+                        );
+                        etDob.setText(formatted);
+                    },
+                    year, month, day
+            );
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (isEditing) return;
-                isEditing = true;
+            dlg.getDatePicker().setMaxDate(System.currentTimeMillis());
 
-                String text = s.toString().replace("-", "");
-
-                if (text.length() > 4)
-                    text = text.substring(0, 4) + "-" + text.substring(4);
-                if (text.length() > 7)
-                    text = text.substring(0, 7) + "-" + text.substring(7);
-
-                etDob.setText(text);
-                etDob.setSelection(text.length());
-
-                isEditing = false;
-            }
+            dlg.show();
         });
 
         db = AppDatabase.getInstance(requireContext());

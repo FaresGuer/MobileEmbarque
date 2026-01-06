@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppDatePickerTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <!-- Dialog background -->
+        <item name="colorSurface">#FFFFFF</item>
+
+        <!-- Primary color (selected date, OK button) -->
+        <item name="colorPrimary">#222222</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+
+        <!-- Text colors -->
+        <item name="android:textColorPrimary">#222222</item>
+        <item name="android:textColorSecondary">#777777</item>
+
+        <!-- Accent / highlights -->
+        <item name="colorAccent">#222222</item>
+    </style>
+</resources>

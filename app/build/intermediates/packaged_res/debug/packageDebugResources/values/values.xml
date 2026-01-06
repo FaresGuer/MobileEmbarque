@@ -12,6 +12,21 @@
     <string name="send_sms_permission_rationale">The app needs SMS permission to send alerts automatically.</string>
     <string name="sms_snackbar_text">Send alert to friends? Tap CANCEL to stop</string>
     <string name="unavailable">Unavailable</string>
+    <style name="AppDatePickerTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        
+        <item name="colorSurface">#FFFFFF</item>
+
+        
+        <item name="colorPrimary">#222222</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+
+        
+        <item name="android:textColorPrimary">#222222</item>
+        <item name="android:textColorSecondary">#777777</item>
+
+        
+        <item name="colorAccent">#222222</item>
+    </style>
     <style name="Base.Theme.Projet" parent="Theme.Material3.DayNight.NoActionBar">
         
         

@@ -181,6 +181,7 @@ string send_sms_alert_title
 string send_sms_permission_rationale
 string sms_snackbar_text
 string unavailable
+style AppDatePickerTheme
 style Base.Theme.Projet
 style Theme.Projet
 xml backup_rules
