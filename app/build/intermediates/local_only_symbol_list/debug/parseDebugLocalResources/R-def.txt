@@ -60,6 +60,7 @@ id etPassword
 id etPhone
 id etUsername
 id form
+id formContainer
 id fragment_container
 id imgDrawerHeader
 id itemControl
