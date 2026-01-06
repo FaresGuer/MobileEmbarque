@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,7 +81,33 @@ public class RegisterFragment extends Fragment {
         etPassword = view.findViewById(R.id.etPassword);
         Button btnCreate = view.findViewById(R.id.btnCreate);
         ImageButton btnBack = view.findViewById(R.id.btnBack);
+        etDob.addTextChangedListener(new TextWatcher() {
+            private boolean isEditing = false;
 
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (isEditing) return;
+                isEditing = true;
+
+                String text = s.toString().replace("-", "");
+
+                if (text.length() > 4)
+                    text = text.substring(0, 4) + "-" + text.substring(4);
+                if (text.length() > 7)
+                    text = text.substring(0, 7) + "-" + text.substring(7);
+
+                etDob.setText(text);
+                etDob.setSelection(text.length());
+
+                isEditing = false;
+            }
+        });
 
         db = AppDatabase.getInstance(requireContext());
 
